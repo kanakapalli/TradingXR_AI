@@ -1,9 +1,10 @@
+import json
 import requests
 
 api_key = 'D9FSHNEMC8Z5AWVR'
 
 
-def fetch_news_sentiment(api_key, tickers=None, topics=None, time_from=None, time_to=None, sort='LATEST', limit=50):
+def get_news_sentiment(api_key, tickers=None, topics=None, time_from=None, time_to=None, sort='LATEST', limit=50):
     base_url = 'https://www.alphavantage.co/query?function=NEWS_SENTIMENT'
     params = {
         'apikey': api_key,
@@ -20,7 +21,7 @@ def fetch_news_sentiment(api_key, tickers=None, topics=None, time_from=None, tim
     
     response = requests.get(base_url, params=params)
     if response.status_code == 200:
-        return response.json()
+        return json.dumps(response.json())
     else:
-        return {'error': f'Error {response.status_code}: {response.text}'}
+        return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
 
