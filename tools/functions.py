@@ -1,14 +1,9 @@
 import json
 import requests
 
-# api_key = 'D9FSHNEMC8Z5AWVR'
 api_key = '9Z761MFGD9LS3BWQ'
 
 
-
-
-
-# func def - get_news_sentiment
 def get_news_sentiment(api_key, tickers=None, topics=None, time_from=None, time_to=None, sort='LATEST', limit=50):
     base_url = 'https://www.alphavantage.co/query?function=NEWS_SENTIMENT'
     params = {
@@ -20,59 +15,62 @@ def get_news_sentiment(api_key, tickers=None, topics=None, time_from=None, time_
         'sort': sort,
         'limit': limit
     }
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
-    
+
     response = requests.get(base_url, params=params)
     if response.status_code == 200:
         return json.dumps(response.json())
     else:
-        return json.dumps({'error': f'Error {response.status_code}: {response.text}'})   
-# desc - get_news_sentiment_description
-get_news_sentiment_description =  {
-      "type": "function",
-      "function": {
+        return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+    # desc - get_news_sentiment_description
+
+
+get_news_sentiment_description = {
+    "type": "function",
+    "function": {
         "name": "get_news_sentiment",
         "description": "Fetch news sentiment data from Alpha Vantage",
         "parameters": {
-          "type": "object",
-          "properties": {
-            "tickers": {
-              "type": "string",
-              "description": "The stock/crypto/forex symbols to filter news by",
+            "type": "object",
+            "properties": {
+                "tickers": {
+                    "type": "string",
+                    "description": "The stock/crypto/forex symbols to filter news by",
+                },
+                "topics": {
+                    "type": "string",
+                    "description": "The news topics to filter by",
+                },
+                "time_from": {
+                    "type": "string",
+                    "description": "The start time for the news articles in YYYYMMDDTHHMM format",
+                },
+                "time_to": {
+                    "type": "string",
+                    "description": "The end time for the news articles in YYYYMMDDTHHMM format",
+                },
+                "sort": {
+                    "type": "string",
+                    "description": "The sorting order of the results (LATEST, EARLIEST, RELEVANCE)",
+                    "default": "LATEST"
+                },
+                "limit": {
+                    "type": "integer",
+                    "description": "The maximum number of results to return",
+                    "default": 50
+                },
             },
-            "topics": {
-              "type": "string",
-              "description": "The news topics to filter by",
-            },
-            "time_from": {
-              "type": "string",
-              "description": "The start time for the news articles in YYYYMMDDTHHMM format",
-            },
-            "time_to": {
-              "type": "string",
-              "description": "The end time for the news articles in YYYYMMDDTHHMM format",
-            },
-            "sort": {
-              "type": "string",
-              "description": "The sorting order of the results (LATEST, EARLIEST, RELEVANCE)",
-              "default": "LATEST"
-            },
-            "limit": {
-              "type": "integer",
-              "description": "The maximum number of results to return",
-              "default": 50
-            },
-          },
-          "required": ["tickers"],
+            "required": ["tickers"],
         },
-      },
-    }
+    },
+}
 
 
 # func def - get_time_series_intraday
-def get_time_series_intraday(api_key, symbol, interval, adjusted=True, extended_hours=True, month=None, outputsize='compact', datatype='json'):
+def get_time_series_intraday(api_key, symbol, interval, adjusted=True, extended_hours=True, month=None,
+                             outputsize='compact', datatype='json'):
     base_url = 'https://www.alphavantage.co/query'
     params = {
         'function': 'TIME_SERIES_INTRADAY',
@@ -86,7 +84,7 @@ def get_time_series_intraday(api_key, symbol, interval, adjusted=True, extended_
     }
     if month:
         params['month'] = month
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
 
@@ -95,7 +93,7 @@ def get_time_series_intraday(api_key, symbol, interval, adjusted=True, extended_
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
-    
+
 
 # desc - get_time_series_intraday
 time_series_intraday_description = {
@@ -140,6 +138,7 @@ time_series_intraday_description = {
     }
 }
 
+
 # func def - get_time_series_daily
 def get_time_series_daily(api_key, symbol, outputsize='compact', datatype='json'):
     base_url = 'https://www.alphavantage.co/query'
@@ -150,7 +149,7 @@ def get_time_series_daily(api_key, symbol, outputsize='compact', datatype='json'
         'outputsize': outputsize,
         'datatype': datatype
     }
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
 
@@ -159,6 +158,8 @@ def get_time_series_daily(api_key, symbol, outputsize='compact', datatype='json'
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_time_series_daily
 get_time_series_daily_description = {
     "type": "function",
@@ -199,7 +200,7 @@ def get_time_series_daily_adjusted(api_key, symbol, outputsize='compact', dataty
         'outputsize': outputsize,
         'datatype': datatype
     }
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
 
@@ -208,6 +209,8 @@ def get_time_series_daily_adjusted(api_key, symbol, outputsize='compact', dataty
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_time_series_daily_adjusted
 get_time_series_daily_adjusted_description = {
     "type": "function",
@@ -262,7 +265,7 @@ def get_time_series_weekly(api_key, symbol, datatype='json'):
         'apikey': api_key,
         'datatype': datatype
     }
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
 
@@ -271,6 +274,8 @@ def get_time_series_weekly(api_key, symbol, datatype='json'):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_time_series_weekly
 get_time_series_weekly_description = {
     "type": "function",
@@ -305,7 +310,7 @@ def get_time_series_weekly_adjusted(api_key, symbol, datatype='json'):
         'apikey': api_key,
         'datatype': datatype
     }
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
 
@@ -314,6 +319,8 @@ def get_time_series_weekly_adjusted(api_key, symbol, datatype='json'):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_time_series_weekly_adjusted
 get_time_series_weekly_adjusted_description = {
     "type": "function",
@@ -348,7 +355,7 @@ def get_time_series_monthly(api_key, symbol, datatype='json'):
         'apikey': api_key,
         'datatype': datatype
     }
-    
+
     # Remove None values from params
     params = {k: v for k, v in params.items() if v is not None}
 
@@ -357,6 +364,8 @@ def get_time_series_monthly(api_key, symbol, datatype='json'):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_time_series_monthly
 get_time_series_monthly_description = {
     "type": "function",
@@ -400,6 +409,8 @@ def get_time_series_monthly_adjusted(api_key, symbol, datatype='json'):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_time_series_monthly_adjusted
 get_time_series_monthly_adjusted_description = {
     "type": "function",
@@ -443,6 +454,8 @@ def get_global_quote(api_key, symbol, datatype='json'):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - get_global_quote
 get_global_quote_description = {
     "type": "function",
@@ -486,6 +499,8 @@ def symbol_search(api_key, keywords, datatype='json'):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - symbol_search
 symbol_search_description = {
     "type": "function",
@@ -524,6 +539,8 @@ def market_status(api_key):
         return json.dumps(response.json())
     else:
         return json.dumps({'error': f'Error {response.status_code}: {response.text}'})
+
+
 # desc - market_status
 market_status_description = {
     "type": "function",
@@ -537,6 +554,7 @@ market_status_description = {
     },
 }
 
+
 def create_post(occupation, organization, email):
     url = 'https://www.alphavantage.co/create_post/'
     form_data = {
@@ -546,7 +564,7 @@ def create_post(occupation, organization, email):
     }
 
     response = requests.post(url, data=form_data)
-    
+
     if response.status_code == 200:
         response_json = response.json()
         api_key = response_json.get('text').split('API key: ')[1].split('. ')[0]
@@ -557,74 +575,3 @@ def create_post(occupation, organization, email):
         return f'Error {response.status_code}: {response.text}'
 
 
-def main():
-
-    # Call create_post function to obtain API key
-    api_key = create_post(occupation='Data Scientist', organization='ABC Corp', email='example@example.com')
-    
-    # Ensure that api_key is obtained before proceeding
-    if api_key.startswith('Error'):
-        print(api_key)
-        return
-
-    # Example usage of get_news_sentiment
-    print("\nFetching news sentiment data for IBM...")
-    news_sentiment_data = get_news_sentiment(api_key, tickers='IBM')
-    print(news_sentiment_data)
-
-    # Example usage of get_time_series_intraday
-    print("\nFetching intraday data for IBM...")
-    intraday_data = get_time_series_intraday(api_key, symbol='IBM', interval='5min')
-    print(intraday_data)
-
-     # Example usage of get_time_series_daily
-    print("\nFetching daily time series data for IBM...")
-    daily_data = get_time_series_daily(api_key, symbol='IBM')
-    print(daily_data)
-
-    
-
-    # Example usage of get_time_series_daily_adjusted
-    print("Fetching daily adjusted time series data for IBM...")
-    daily_adjusted_data = get_time_series_daily_adjusted(api_key, symbol='IBM')
-    print(daily_adjusted_data)
-    
-
-    # Example usage of get_time_series_weekly
-    print("Fetching weekly time series data for IBM...")
-    weekly_data = get_time_series_weekly(api_key, symbol='IBM')
-    print(weekly_data)
-
-    # Example usage of get_time_series_weekly_adjusted
-    print("\nFetching weekly adjusted time series data for IBM...")
-    weekly_adjusted_data = get_time_series_weekly_adjusted(api_key, symbol='IBM')
-    print(weekly_adjusted_data)
-
-    # Example usage of get_time_series_monthly
-    print("Fetching monthly time series data for IBM...")
-    monthly_data = get_time_series_monthly(api_key, symbol='IBM')
-    print(monthly_data)
-
-    # Example usage of get_time_series_monthly_adjusted
-    print("Fetching monthly adjusted time series data for IBM...")
-    monthly_adjusted_data = get_time_series_monthly_adjusted(api_key, symbol='IBM')
-    print(monthly_adjusted_data)
-
-    # Example usage of get_global_quote
-    print("Fetching the latest price and volume information for IBM...")
-    global_quote_data = get_global_quote(api_key, symbol='IBM')
-    print(global_quote_data)
-
-    # Example usage of symbol_search
-    print("Searching for symbols and market information based on keywords...")
-    search_results = symbol_search(api_key, keywords='tesco')
-    print(search_results)
-
-    # Example usage of market_status
-    print("\nFetching the current market status...")
-    status = market_status(api_key)
-    print(status)
-
-
-if __name__ == "__main__":
-    main()

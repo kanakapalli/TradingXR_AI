@@ -1,9 +1,11 @@
-import json
-import os
-import requests
-from tool.tool import *
-from tool.functions import *
+
+import importlib
 import openai
+from pydantic import json
+
+import tools.tool
+module = importlib.import_module('tools')
+
 
 openai.api_key = "sk-proj-"
 
@@ -15,7 +17,7 @@ def run_conversation(content):
     response = openai.chat.completions.create(
         model="gpt-3.5-turbo-0125",
         messages=messages,
-        tools=tools,
+        tools=tools.tool.tools,
         tool_choice="auto",
     )
     response_message = response.choices[0].message
